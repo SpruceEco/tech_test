@@ -1,22 +1,35 @@
-import React, { useState } from 'react'
-import { XorO } from './types'
-
+import React, { useState, useEffect } from "react";
+import { TicTacToe } from "./views/TicTacToe";
+import { FaSun, FaMoon } from "react-icons/fa";
+import { IoIosSunny, IoIosMoon } from "react-icons/io";
 
 export const Main = () => {
-  const [board, setBoard] = useState<(XorO | undefined)[][]>([
-    [undefined, undefined, undefined],
-    [undefined, undefined, undefined],
-    [undefined, undefined, undefined]
-  ])
+  const [dark, setDark] = useState(true); // Default to dark mode
 
-  return <div className='flex flex-col mt-10 items-center gap-10'>
-    <div className='font-bold text-2xl'>Tic Tac Toe</div>
-    <div className='flex flex-col gap-1'>
-      {board.map(row => <div className='flex gap-1'>
-        {row.map(column => <div className='border-2 border-gray-900 w-10 h-10 cursor-pointer items-center justify-center text-2xl font-bold flex'>
-          {column}
-        </div>)}
-      </div>)}
-    </div>
-  </div>
-}
+  const toggleDarkMode = () => {
+    document.body.classList.toggle("dark");
+    setDark(!dark);
+  };
+
+  useEffect(() => {
+    if (dark) {
+      document.body.classList.add("dark");
+    } else {
+      document.body.classList.remove("dark");
+    }
+    document.body.style.backgroundColor = dark ? "#2d3748" : "#f7fafc";
+  }, [dark]);
+
+  return (
+    <>
+      <div
+        className="absolute top-4 right-4 cursor-pointer text-2xl"
+        onClick={toggleDarkMode}
+      >
+        {dark ? <IoIosSunny color="grey" /> : <IoIosMoon color="grey" />}
+      </div>
+
+      <TicTacToe />
+    </>
+  );
+};
